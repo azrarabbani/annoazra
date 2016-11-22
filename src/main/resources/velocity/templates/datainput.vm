@@ -1,0 +1,71 @@
+package ${packageName}.generated;
+
+import org.springframework.stereotype.*;
+import org.springframework.context.annotation.*;
+
+import com.paypal.breadboard.interfacegen.utils.BeanUtils;
+import com.paypal.breadboard.annotations.moduleinterface.*;
+
+import ${packageName}.*;
+
+/**
+ * An auto-generated interface from defined
+ * interface ${packageName}.${className}.
+ *
+ * This class should only be used during
+ * engine execution, while clients will leverage only
+ * read-access interface.
+ */
+@Component($annotationValues.get("id"))
+@Scope("prototype")
+public class ${className}Generated implements ${className} {
+#macro ( si $type )@SingleInputPort(name="${name}", declaredType="${type}")
+#end
+#macro ( throws )@throws when a copy error occurs
+#end
+#macro ( values )
+#set( $nameOfMethod = $method.getSimpleName() )
+#set( $name =  $methodAnnotations.get("$nameOfMethod").get("name").replace('"', '') )
+#set( $concreteType = $concreteTypeOfMultiInputMethods.get("$nameOfMethod") )
+#set( $returnType = $methodReturnType.get("$nameOfMethod") )
+#set( $declaredType = $declaredTypeOfMultiInputMethods.get("$nameOfMethod") )
+#end
+
+	/**
+	 * Constructor initialization
+	 */
+	public ${className}Generated() {
+#foreach($method in $multiInputMethods)
+	#values()
+	this.${name} = new ${concreteType}<>();
+#end
+	}
+
+	//
+	// DECLARATIONS
+	//
+#foreach($method in ${methods})
+	#values()
+	private $returnType $name;
+#end
+
+	//
+	// GETTERS
+	//
+#foreach($method in ${methods})
+	#values()
+
+	/**
+	 * Returns the underlying data that was set by the Engine.
+	 * This should be used to retrieve data for client use.
+	 * @return the $nameOfMethod
+	 */
+	@Override
+	public $returnType ${nameOfMethod}() {
+		return this.${name};
+	}
+#end
+
+
+
+}
